@@ -1,8 +1,11 @@
 package application;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,26 +18,39 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import model.PDFMerger;
+
 public class Program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 
-		File file = new File("C:\\Users\\Gabriel\\Downloads\\34001108");
+		List<InputStream> inputPdfList = new ArrayList<InputStream>();
+		
+		String pasta = "C:\\Users\\Gabriel\\Downloads\\34001108\\";
+		
+		File file = new File(pasta);
+		
 		
 		// Percorre minha lista de arquivos
 		for (String name : file.list()) {
+
 			
 			// Verifica o que é apenas PDF
 			if (name.indexOf(".pdf") >= 0) {
 				
 				Document document = new Document(PageSize.A4, 20, 20, 210, 0);
 				try {
+					
+					String capa = "C:\\Users\\Gabriel\\Downloads\\34001108\\Capas\\CAPA - " + String.format(name);
 
-					PdfWriter.getInstance(document,
-							new FileOutputStream("C:\\Users\\Gabriel\\Downloads\\34001108\\Capas\\CAPA - " + name)); // criar
-					// o
-					// pdf
+					PdfWriter.getInstance(document, new FileOutputStream(capa)); // criar o pdf
+					
+					inputPdfList.add(new FileInputStream(capa));
+					System.out.println(capa);
+					inputPdfList.add(new FileInputStream(pasta + name));
+					System.out.println(pasta + name);
+
 					document.open();
 
 					// adicionando um parágrafo no documento
@@ -53,6 +69,9 @@ public class Program {
 				document.close();
 			}
 		}
+		
+		OutputStream outputStream = new FileOutputStream("C:\\Users\\Gabriel\\Downloads\\PDF\\Merger.pdf");
+		PDFMerger.mergePdfFiles(inputPdfList, outputStream);
 	}
 
 	public static String tratar(String str) {
