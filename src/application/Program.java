@@ -27,14 +27,17 @@ public class Program {
 
 		List<InputStream> inputPdfList = new ArrayList<InputStream>();
 		
-		String pasta = "C:\\Users\\Gabriel\\Downloads\\34001108\\";
-		
+		String pasta = "C:\\Users\\Gabriel\\Downloads\\Teste de Formatação\\";
 		File file = new File(pasta);
 		
 		
+		
+		for (String arq : file.list()) {
+			
+		}
+		
 		// Percorre minha lista de arquivos
 		for (String name : file.list()) {
-
 			
 			// Verifica o que é apenas PDF
 			if (name.indexOf(".pdf") >= 0) {
@@ -42,7 +45,7 @@ public class Program {
 				Document document = new Document(PageSize.A4, 20, 20, 210, 0);
 				try {
 					
-					String capa = "C:\\Users\\Gabriel\\Downloads\\34001108\\Capas\\CAPA - " + String.format(name);
+					String capa = "C:\\Users\\Gabriel\\Downloads\\Teste de Formatação\\Capas\\Capa - " + String.format(name);
 
 					PdfWriter.getInstance(document, new FileOutputStream(capa)); // criar o pdf
 					
@@ -57,6 +60,7 @@ public class Program {
 
 					Paragraph texto = new Paragraph(tratar(name.replace(".pdf", "")),
 							new Font(FontFamily.TIMES_ROMAN, 45, Font.BOLD));
+					
 					texto.setAlignment(Element.ALIGN_CENTER);
 
 					document.add(texto);
@@ -94,6 +98,7 @@ public class Program {
 		return sb.toString().replace("  ", " ").replace(" -", "");
 
 	}
+	
 	
 }
 	
